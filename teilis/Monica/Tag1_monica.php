@@ -76,7 +76,7 @@ print which_is_smaller (0.5, 0.25) . PHP_EOL;
 
 
 function which_is_smaller(int $n1, int $n2): string {
-    if($n1 == $n2) {
+    if ($n1 == $n2) {
         return "Die Zahlen sind gleich groß";
     } elseif($n1 < $n2) {
         return $n1;
@@ -87,7 +87,6 @@ function which_is_smaller(int $n1, int $n2): string {
 }
 
 print which_is_smaller(13,13) . PHP_EOL;
-
 
 
 
