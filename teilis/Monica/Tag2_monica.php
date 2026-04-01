@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 /*
 Aufgabe: Schreiben Sie eine ===Funktion===, die den Namen einliest und diesen 
 dann mit "Hallo,  <Name>! begrüßt.
@@ -88,4 +88,53 @@ echo "Das Wort '$input' ist ein Palindrom." . PHP_EOL;
 } else {
 echo "Das Wort '$input' ist kein Palindrom." . PHP_EOL;
 }
+
+/*Schreiben Sie eine Funktion is_even_or_odd(int $num): string die für 
+eine Zahl bestimmt, 
+ob diese gerade oder ungerade ist.*/
+
+function is_even_or_odd(int $num) {
+    if ($num % 2 === 0) {
+    echo "gerade";
+} else {
+    echo "ungerade";
+}
+
+}
+
+
+function is_palindrom(string $word): bool {
+    $lower = strtolower($word);
+    return $lower === strrev($lower);
+}
+
+$input = "";
+print "Tippen Sie 'Ende' um das Programm zubeenden.\n";
+
+while (true) {
+    $input = readline("Bitte geben Sie ein Wort ein: ");
+    //Abbruchbedingung
+    if ($input === "Ende") {
+        // Schleife verlassen
+        break;
+    }
+
+    if (is_palindrom($input)) {
+        echo "Das Wort '$input' ist ein Palindrom." . PHP_EOL;
+    } else {
+        echo "Das Wort '$input' ist kein Palindrom." . PHP_EOL;
+    }
+}
+
+for ($i = 0; $i <= 100000; $i++) {
+    print "$i\n";
+}
+
+
+/*Schreiben Sie eine Funktion `isPrime(int $num): bool`, die
+für eine Zahl $num zurückgibt, ob sie eine Primzahl ist oder nicht.
+
+Primzahl = einen Zahl, die nur durch 1 und sich selbst restlos teilbar ist
+
+Primzahlen: 2, 3, 5, 7, 11, 13, 17, ...*/
 
