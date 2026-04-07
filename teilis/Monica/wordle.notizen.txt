@@ -1,0 +1,168 @@
+<?php
+
+/*Meilestone 0: Spielen Sie eine runde Wordle*/
+
+/*Meilenstone 1: Das Spiel verstehen + Notizen in Pseudocode oder Stichpunkte*/
+
+/* Wie funktioniert das Spiel Wort-Rätsel (Wordle)?
+   Ziel: Ein 5-Buchstaben-Wort "spiel" erraten */
+
+/**
+ * 1. Set a random word $targetWord
+ * 2. Welcome the player to the game
+ * 3. Start loop
+ *      a) Ask the player for a word $guessedWord
+ *      b) Check each letter of #guessedWord whether
+ *            i. It is in $targetWord and at the correct spot => 🟢
+ *           ii. It is in $targetWord but in the wrong spot => 🟠
+ *          iii. It is not in $targetWord at all => ⚫
+ *      c) Are all letters correct? => break out of the loop
+ * 4. Let the player know they won
+ */
+
+ // 1. Set target word
+$targetWord = "spiel";
+
+// 2. Welcome message
+print "Willkommen zum Wort-Rätsel!\n";
+print "Errate das 5-Buchstaben-Wort.\n";
+
+// 3. Start loop
+while (true) {
+
+    // a) Ask for input
+    print "\nEingabe: ";
+    $guessedWord = trim(fgets(STDIN));
+    $guessedWord = strtolower($guessedWord);
+
+    // Optional: Eingabe prüfen
+    if (strlen($guessedWord) !== 5) {
+        print "Bitte genau 5 Buchstaben eingeben!\n";
+        continue;
+    }
+
+    // b) Check each letter
+    for ($i = 0; $i < 5; $i++) {
+
+        if ($guessedWord[$i] === $targetWord[$i]) {
+            print "🟢 ";
+        } elseif (strpos($targetWord, $guessedWord[$i]) !== false) {
+            print "🟠 ";
+        } else {
+            print "⚫ ";
+        }
+    }
+
+    print "\n";
+
+    // c) Check if all letters correct
+    if ($guessedWord === $targetWord) {
+        break;
+    }
+}
+
+// 4. Win message
+print "🎉 Gewonnen!\n";
+
+
+/* Warum wurde das Spiel gemacht?
+   - Zum Spaß entwickelt
+   - Einfach und für alle zugänglich
+   - Ergebnisse können verglichen werden */
+
+/* Tipps:
+   - Starte mit vielen unterschiedlichen Buchstaben
+   - Vermeide Wiederholungen am Anfang
+   - Nutze Hinweise logisch */
+
+/*Meilenstone 3: Identifizieren Sie mindestens drei Probleme oder 
+neue Features für das Spiel und beheben Sie/setzten Sie in PHP um*/
+
+/* Meilenstein 3:
+   - Max. 6 Versuche
+   - Zufälliges Wort
+   - Korrekte Buchstaben-Logik */
+
+/*Neue Features
+Richtige Behandlung von wiederholten Buchstaben – 🟢 und 🟠 werden korrekt gezählt.
+Längenprüfung – nur Wörter mit der richtigen Länge werden akzeptiert.
+Maximale Versuche – z. B. 6 Versuche wie Wordle.
+Eingabevalidierung – nur Buchstaben erlaubt.
+Bessere Rückmeldung – klare Meldungen bei falschen Eingaben oder Ende des Spiels.
+Optional: Highscore / Liste der bisherigen Versuche – 
+visuelles Feedback bleibt sichtbar.*/
+
+$targetWord = "spiel";
+$wordLength = strlen($targetWord);
+$maxAttempts = 6;
+$attempt = 0;
+$guessedWords = [];
+
+echo "Willkommen zum Wordle-Spiel! Rate das {$wordLength}-Buchstaben-Wort.\n";
+
+do {
+    // Spielerinput
+    $guessedWord = strtolower(readline("Versuch " . ($attempt+1) . ": "));
+    
+    // Eingabevalidierung
+    if (!ctype_alpha($guessedWord)) {
+        echo "Bitte nur Buchstaben eingeben.\n";
+        continue;
+    }
+    
+    if (strlen($guessedWord) !== $wordLength) {
+        echo "Falsche Wortlänge! Das Wort muss {$wordLength} Buchstaben haben.\n";
+        continue;
+    }
+    
+    $attempt++;
+    $guessedWords[] = $guessedWord;
+    $result = [];
+    
+    // Buchstaben zählen für korrekte 🟠 Anzeige
+    $targetLetterCounts = count_chars($targetWord, 1);
+    
+    // Zuerst richtige Position prüfen (🟢)
+    $greenPositions = [];
+    for ($i=0; $i<$wordLength; $i++) {
+        if ($guessedWord[$i] === $targetWord[$i]) {
+            $result[$i] = "🟢";
+            $targetLetterCounts[ord($guessedWord[$i])]--;
+            $greenPositions[] = $i;
+        }
+    }
+    
+    // Danach richtige Buchstaben an falscher Position (🟠)
+    for ($i=0; $i<$wordLength; $i++) {
+        if (isset($result[$i])) continue; // schon grün
+        $letter = $guessedWord[$i];
+        if (isset($targetLetterCounts[ord($letter)]) && $targetLetterCounts[ord($letter)] > 0) {
+            $result[$i] = "🟠";
+            $targetLetterCounts[ord($letter)]--;
+        } else {
+            $result[$i] = "⚫";
+        }
+    }
+    
+    // Ausgabe der Ergebnisse
+    echo implode(" ", $result) . "\n";
+    
+    // Gewonnen?
+    if ($guessedWord === $targetWord) {
+        echo "🎉 Glückwunsch! Du hast das Wort '{$targetWord}' in {$attempt} Versuchen erraten!\n";
+        break;
+    }
+
+    // Max Attempts erreicht?
+    if ($attempt >= $maxAttempts) {
+        echo "Leider verloren! Das richtige Wort war: '{$targetWord}'\n";
+        break;
+    }
+
+} while (true);
+
+
+
+
+// Meilenstein 4: Wörter aus einer Datei auslesen
+// Meilenstein 5: Es gibt immer noch etwas zu tun 
